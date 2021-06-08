@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>오늘 무엇을 읽을까? | 회원가입</title>
+    <link href="{{ url_for('static', filename='./css/login.css') }}" rel="stylesheet">
+    <script>
+
+        let errorPoint = {
+            nickName: false,
+            password: false,
+            passwordConfirm: false,
+        };
+
+
+        function showErrorMsg(target, msg, chk) {
+            const valid = document.querySelector(target);
+            if (chk) {
+                valid.setAttribute('class', 'help-show');
+                valid.innerHTML = msg;
+            } else {
+                valid.setAttribute('class', 'help');
+            }
+
+        }
+
+        function checkErroPoint(errorName, chk) {
+            if (chk) errorPoint[errorName] = false;
+            else errorPoint[errorName] = true;
+
+            let isError = false;
+            let keys = Object.keys(errorPoint);
+
+            for (let i = 0; i < keys.length; i++) {
+                if (!errorPoint[keys[i]]) {
+                    isError = true;
+                    break;
+                }
+            }
+            const btn = document.querySelector(".login_btn");
+            if (!isError) {
+                btn.removeAttribute('disabled');
+            } else {
+                btn.setAttribute("disabled", "disabled");
+            }
+        }
+
+       async function createAccount() {
+            const nickName = document.querySelector("#nickName");
+            const password = document.querySelector("#password");
+
+
+            if (!await isDup(nickName.value)) {
+
+                showErrorMsg('#help-nickName', '중복되는 아이디입니다.', true);
+                checkErroPoint('nickName', true);
+                nickName.focus();
+            } else {
+                showErrorMsg('#help-nickName', 'None.', false);
+                checkErroPoint('nickName', false);
+
+                const formData = new FormData();
+                formData.append('nickName', nickName.value);
+                formData.append('password', password.value);
+
+                try {
+                    await fetch('/user/join', {
+                        method: 'POST',
+                        body: formData,
+                    }).then(alert('회원가입되었습니다.'));
+                    window.location.href = '/user/login';
+                } catch (error) {
+                    console.error(error);
+                }
+
+            }
+        }
+
+        async function isDup(value) {
+            try {
+                let url = '/user/dupCheck?nickName=' + value
+                const response = await (await fetch(url, {
+                    method: 'GET',
+                })).json();
+                return response.result
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        function isValidNickName() {
+            const nickName = document.querySelector("#nickName");
+            const value = nickName.value
+
+            if (!is_nickname(value)) {
+
+                showErrorMsg('#help-nickName', '닉네임의 형식을 확인해주세요.<br/>영문과 숫자, 일부 특수문자(._-) 사용 가능. 2-10자 길이', true);
+                checkErroPoint('nickName', true);
+                nickName.focus();
+                return;
+            }
+            showErrorMsg('#help-nickName', 'None', false);
+            checkErroPoint('nickName', false);
+        }
+
+        function isValidPassword(value) {
+            const password = document.querySelector("#password");
+            const passwordConfirm = document.querySelector("#passwordConfirm");
+            if (!is_password(value)) {
+                showErrorMsg('#help-password', '비밀번호의 형식을 확인해주세요.<br/>영문과 숫자 필수 포함, 특수문자(!@#$%^&*) 사용가능 8-20자', true);
+                checkErroPoint('password', true);
+                password.focus();
+                return;
+            }
+
+
+            if (passwordConfirm.value !== "") {
+                if (passwordConfirm.value !== password.value) {
+                    showErrorMsg('#help-password', '비밀번호가 일치하지 않습니다.', true);
+                    checkErroPoint('password', true);
+                    password.focus();
+                    return;
+                }
+            }
+            showErrorMsg('#help-password', 'None', false);
+            checkErroPoint('password', false);
+
+        }
+
+        function isValidPasswordConfirm(value) {
+            const password = document.querySelector("#password")
+            const passwordConfirm = document.querySelector("#passwordConfirm");
+
+            if (!is_password(value)) {
+                showErrorMsg('#help-passwordConfirm', '비밀번호의 형식을 확인해주세요.<br/>영문과 숫자 필수 포함, 특수문자(!@#$%^&*) 사용가능 8-20자', true);
+                checkErroPoint('passwordConfirm', true);
+                passwordConfirm.focus();
+                return;
+            }
+            if (password.value !== passwordConfirm.value) {
+                showErrorMsg('#help-passwordConfirm', '비밀번호가 일치하지 않습니다.', true);
+                checkErroPoint('passwordConfirm', true);
+                passwordConfirm.focus();
+                return;
+            }
+            showErrorMsg('#help-passwordConfirm', 'None', false);
+            checkErroPoint('passwordConfirm', false);
+        }
+
+        function is_nickname(asValue) {
+            let regExp = /^(?=.*[a-zA-Z])[-a-zA-Z0-9_.]{2,10}$/;
+            return regExp.test(asValue);
+        }
+
+        function is_password(asValue) {
+            let regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,20}$/;
+            return regExp.test(asValue);
+        }
+    </script>
+</head>
+<body>
+<div class="header">
+    <img src="https://picsum.photos/seed/picsum/200/300" alt="">
+    <img src="https://picsum.photos/200/300?grayscale" alt="">
+    <img src="https://picsum.photos/200/300/?blur" alt="">
+
+</div>
+<h1 class="title">`오늘은 무엇을 읽을까?` 에 오신것을 환영합니다.</h1>
+<h1 class="warning"> 화면이 좁습니다. 넓혀주세요.</h1>
+<main class="login">
+    <h3>회원가입</h3>
+
+    <div class="form join">
+        <input type="text" placeholder="NickName" name="nickName" id="nickName" onkeyup="isValidNickName()" required>
+        <span id="help-nickName" class="help"></span>
+        <input type="password" placeholder="Password" name="password" id="password" onkeyup="isValidPassword(value)"
+               required>
+        <span id="help-password" class="help">영문과 숫자 조합의 8-20자의 비밀번호를 설정해주세요. 특수문자(!@#$%^&*)도 사용 가능합니다.</span>
+        <input type="password" placeholder="PasswordConfirm" name="passwordConfirm" id="passwordConfirm"
+               onkeyup="isValidPasswordConfirm(value)" required>
+        <span id="help-passwordConfirm" class="help">영문과 숫자 조합의 8-20자의 비밀번호를 설정해주세요. 특수문자(!@#$%^&*)도 사용 가능합니다.</span>
+        <button onclick="createAccount()" class="login_btn" disabled>회원가입</button>
+    </div>
+    <span>계정이 있으신가요?</span>
+    <button onclick="window.location.href='/user/login'">로그인</button>
+</main>
+
+</body>
+</html>

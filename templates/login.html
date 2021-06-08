@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>오늘은 무엇을 읽을까? | 로그인</title>
+    <link href="{{ url_for('static', filename='./css/login.css') }}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script>
+    //메세지가 있으면 메세지를 사용자에게 보내줍니다.
+
+        //랜덤 숫자 생성 함수 이미지 돌릴때 사용
+        const randomUrlGen = () => {
+            ranNum = Math.floor((Math.random() * 7));
+            const src = `url_for('static', filename="img/${ranNum}.jpg")`
+            return src;
+        }
+
+        function login() {
+            const nickName = $('#nickName').val();
+            const password = $('#password').val();
+            $.ajax({
+                type: "post",
+                url: "/user/login",
+                data: {nickName, password},
+                success: function (response) {
+                    const {ok = null, err = null, user = null, token = null} = response;
+                    if (ok) {
+                        $.cookie('token', token, {path: '/'});
+                        alert(`${user.nickName}님 방문을 환영합니다.`);
+                        window.location.href = "/main";
+                    } else {
+                        if (err === "1") {
+                            alert("없는 닉네임 입니다.");
+                            $('#nickName').css("border", "1px solid red");
+                        } else if (err === "2") {
+                            alert("비밀번호가 틀렸습니다.");
+                            $('#password').css("border", "1px solid red");
+                        }
+                    }
+                }
+            })
+        }
+
+
+    </script>
+</head>
+<body>
+<div class="header">
+    <img class="img1" src="{{ url_for('static', filename='img/1.jpg') }}" alt="">
+    <img class="img2" src="{{ url_for('static', filename='img/2.jpg') }}" alt="">
+    <img class="img3" src="{{ url_for('static', filename='img/3.jpg') }}" alt="">
+
+</div>
+<h1 class="title">`오늘은 무엇을 읽을까?` 에 오신것을 환영합니다.</h1>
+<h1 class="warning"> 화면이 좁습니다. 넓혀주세요.</h1>
+<main class="login">
+    <h3>로그인 하세요</h3>
+
+    <div class="form">
+        <input type="text" placeholder="닉네임" required id="nickName">
+        <input type="password" placeholder="비밀번호" required id="password">
+        <button onclick="login()" class="login_btn">로그인</button>
+    </div>
+    <span>계정이 없으신가요?</span>
+    <button onclick="window.location.href='/user/join'">회원가입</button>
+</main>
+
+<script>
+    const id_input = document.querySelector('#nickName');
+    const pw_input = document.querySelector('#password');
+    const focus = (e) => {
+        e.target.style.borderColor = "black";
+    }
+
+    const blur = (e) => {
+        e.target.style.borderColor = "lightgray"
+    }
+    id_input.addEventListener("click", focus);
+    id_input.addEventListener("blur", blur);
+    pw_input.addEventListener("click", focus);
+    pw_input.addEventListener("blur", blur);
+</script>
+
+
+</body>
+</html>
+
+
+

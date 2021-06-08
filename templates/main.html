@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>오늘 읽을 만한 글 | MyPage</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <style>
+        .maintitle {
+            font-family: 'Do Hyeon', sans-serif;
+            color: green;
+            text-align: center;
+        }
+
+        .head {
+            background-image: url("data:image/png;base64,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");
+            position: relative;
+            width: 100%;
+            height: 300px;
+
+            background-size: cover;
+            background-position: center;
+            padding-top: 1%;
+        }
+
+        .nav {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .card-columns {
+            margin-top: 20px;
+            margin-left: 120px;
+        }
+
+        .wrap {
+            width: 100%;
+        }
+
+        .image {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            color: white;
+            text-align: center;
+            background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBCb0ocdLoFjxWswFwhxx4xzCjfgH5Uooq0w&usqp=CAU");
+            background-size: cover;
+            background-position: center;
+            padding-top: 1%;
+        }
+
+
+    </style>
+
+    <script>
+        function logout() {
+            document.cookie = 'token' + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
+            alert('로그아웃!')
+            window.location.href = '/user/login'
+        }
+
+        (async function () {
+            try {
+                const list = await (await fetch('/main/list',
+                    {
+                        method: 'GET',
+                    }
+                )).json();
+
+                const {result} = list
+                let cards = document.querySelector('.card-columns');
+
+                for (let value of result) {
+                    let temp_html = `<div class="card" style="width: 18rem;">
+                                        <img class="card-img-top" src="..." alt="Card image cap">
+                                        <div class="card-body">
+                                            <h5 class="card-title">${value.title}</h5>
+                                            <p class="card-text">${value.content}</p>
+                                            <a href=${value.reference}>참조자료</a>
+                                        </div>
+                                    </div>`
+                    cards.innerHTML += temp_html
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        })();
+
+        async function setContent() {
+            const formdData = new FormData();
+            const title = document.querySelector('#title').value;
+            const content = document.querySelector('#content').value;
+            const reference = document.querySelector('#reference').value;
+
+            console.log(title, content, reference);
+
+            formdData.append('title', title);
+            formdData.append('content', content);
+            formdData.append('reference', reference);
+            try {
+                const result = await (
+                    await fetch('/main', {
+                        method: 'POST',
+                        body: formdData,
+                    })
+                ).json();
+                if (result.message) {
+                    alert(result.message);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+            location.reload();
+        }
+    </script>
+</head>
+
+<body>
+<div class="jumbotron jumbotron-fluid">
+    <nav class="navbar is-fixed-top is-white" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="/" style="margin-right: 15px;">
+                <img style="width: 50px; height: 40px;" src="{{ url_for('static', filename='logo_book.png') }}">
+                <strong class="is-sparta"
+                        style="font-family: 'Do Hyeon', sans-serif; font-size: larger;">오늘을 읽어라</strong>
+            </a>
+            <div>
+                <button class="nav-item button is-info" style="font-family: 'Do Hyeon', sans-serif; margin-top: 8px;"
+                        onclick="location.href='/login'" id="sign-inup">sing in/up
+                </button>
+                <button class="nav-item button is-info is-light"
+                        style="font-family: 'Do Hyeon', sans-serif; margin-top: 8px;"
+                        onclick="logout()" id="logout">logout
+                </button>
+            </div>
+        </div>
+    </nav>
+    <div class="wrap">
+        <header>
+            <div class="image">
+                <div class="content"> eat cloud</div>
+            </div>
+        </header>
+        <!--    <div class="head">-->
+        <!--        <h1 class="maintitle">오늘을 읽어라</h1>-->
+        <!--    </div>-->
+    </div>
+    <div class="nav">
+        <nav class="navbar navbar-light bg-light">
+            <span class="navbar-brand mb-0 h1">내가 좋아요 누른 글</span>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    data-bs-whatever="@mdo">글쓰기
+            </button>
+        </nav>
+    </div>
+    <div class="card-columns"></div>
+
+    <!-- 모달 -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">글쓰기</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">제목:</label>
+                            <input type="text" class="form-control" id="title" name="title">
+                        </div>
+                        <div class="mb-3">
+                            <label for="message-text" class="col-form-label">내용:</label>
+                            <textarea class="form-control" id="content" name="content"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message-text" class="col-form-label">참고자료:</label>
+                            <input type="text" class="form-control" id="reference" name="reference"></input>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="setContent()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
