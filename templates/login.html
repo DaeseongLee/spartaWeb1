@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta property="og:title" content="기억보다는 기록을!!">
+    <meta property="og:description" content="기억보다는 기록을!!"/>
+    <meta property="og:image" content="{{ url_for('static', filename='/img/1.jpg') }}"/>
     <meta charset="UTF-8">
-    <title>오늘은 무엇을 읽을까? | 로그인</title>
+    <title>기억보다는 기록을 | 로그인</title>
     <link href="{{ url_for('static', filename='./css/login.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <script>
-    //메세지가 있으면 메세지를 사용자에게 보내줍니다.
 
-        //랜덤 숫자 생성 함수 이미지 돌릴때 사용
-        const randomUrlGen = () => {
-            ranNum = Math.floor((Math.random() * 7));
-            const src = `url_for('static', filename="img/${ranNum}.jpg")`
-            return src;
-        }
 
         function login() {
             const nickName = $('#nickName').val();
@@ -42,24 +40,35 @@
             })
         }
 
-
     </script>
+    <style>
+        .login {
+
+        }
+    </style>
 </head>
 <body>
-<div class="header">
-    <img class="img1" src="{{ url_for('static', filename='img/1.jpg') }}" alt="">
-    <img class="img2" src="{{ url_for('static', filename='img/2.jpg') }}" alt="">
-    <img class="img3" src="{{ url_for('static', filename='img/3.jpg') }}" alt="">
-
-</div>
-<h1 class="title">`오늘은 무엇을 읽을까?` 에 오신것을 환영합니다.</h1>
+<nav class="navbar is-fixed-top is-white" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="/" style="margin-right: 15px;">
+            <img style="width: 50px; height: 40px;" src="{{ url_for('static', filename='logo_book.png') }}">
+            <strong class="is-sparta"
+                    style="font-family: 'Do Hyeon', sans-serif; font-size: larger;">기억보단 기록을</strong>
+        </a>
+    </div>
+</nav>
+<section class="hero">
+    <div class="hero-body">
+        <p class="title">
+            📖 기억보단 기록을
+        </p>
+    </div>
+</section>
 <h1 class="warning"> 화면이 좁습니다. 넓혀주세요.</h1>
 <main class="login">
-    <h3>로그인 하세요</h3>
-
     <div class="form">
-        <input type="text" placeholder="닉네임" required id="nickName">
-        <input type="password" placeholder="비밀번호" required id="password">
+        <input type="text" placeholder="Nickname" required id="nickName">
+        <input type="password" placeholder="Password" required id="password">
         <button onclick="login()" class="login_btn">로그인</button>
     </div>
     <span>계정이 없으신가요?</span>

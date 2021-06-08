@@ -1,3 +1,9 @@
+:root {
+    --bgColor: #f5f6fa;
+    --boxColor: #B5DCE8;
+    --borderRadius: 0.2rem;
+}
+
 body {
     background-color: #f5f6fa;
     display: flex;
@@ -21,7 +27,7 @@ input {
 }
 
 input[type="submit"] {
-    background-color: lightblue;
+    background-color: #3273dc;
     border: 1px solid transparent;
     border-radius: .2rem;
 }
@@ -49,7 +55,7 @@ button {
     border-radius: 0.2rem;
     padding: .5em 1em;
     border: 1px solid gray;
-    background-color: lightblue;
+    background-color: gray;
 }
 
 
@@ -93,6 +99,7 @@ header {
     padding: 2rem 4rem 4rem 4rem;
     border-radius: 1rem;
 
+
 }
 
 span {
@@ -114,25 +121,27 @@ span {
     }
 }
 
-@media screen and (max-width: 570px ){
-    .warning{
+@media screen and (max-width: 570px ) {
+    .warning {
         color: red;
         transition: .2s linear color;
     }
-    html{
+
+    html {
         font-size: 10px;
-        transition: .3s linear all ;
+        transition: .3s linear all;
     }
 }
 
-@media screen and (min-width: 1300px){
-    html{
+@media screen and (min-width: 1300px) {
+    html {
         font-size: 18px;
     }
 }
 
+
 /*대성님 파트*/
-.form.join{
+.form.join {
     display: flex;
     flex-direction: column;
     width: 20rem;
@@ -140,14 +149,20 @@ span {
 }
 
 .help {
-  display: none;
+    display: none;
 }
 
 .help-show {
     display: inline-block;
     font-size: 0.1rem;
-    margin:0;
+    margin: 0;
     margin-bottom: 1rem;
     color: red;
 }
 
+.navbar-brand {
+    width: 100vw;
+    display: flex;
+    padding: 0;
+
+}

@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta property="og:title" content="기억보다는 기록을!!">
+    <meta property="og:description" content="기억보다는 기록을!!"/>
+    <meta property="og:image" content="{{ url_for('static', filename='/img/1.jpg') }}"/>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>오늘 읽을 만한 글 | MyPage</title>
+    <title>기억보단 기록을 | MyPage</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
@@ -11,37 +14,23 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <style>
-        .wrap {
-            padding-top: 40px;
-        }
 
-        .head {
-            text-align: center;
-        }
 
-        .nav {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
+        /*css 작업 하는 공간*/
 
     </style>
 
     <script>
         $(document).ready(function () {
-            showLikeColumn();
+            // 화면 뜨면 맨 처음 시작하는 작업 공간
         });
 
-        function logout() {
-            $.removeCookie('token');
-            alert('로그아웃!')
-            window.location.href = '/login'
-        }
 
-        function showLikeColumn() {
+        // ajax 통신 함수 기본틀
+        function getData() {
             $.ajax({
                 type: 'GET',
-                url: '/user/mypage',
+                url: '/detail',
                 data: {},
                 success: function (response) {
                     console.log(response);
@@ -52,27 +41,7 @@
 </head>
 
 <body>
-<div class="jumbotron jumbotron-fluid">
-    <div class="head">
-        <h1 class="display-4">메인 화면</h1>
-    </div>
-</div>
-<div class="nav">
-    <nav class="navbar navbar-light bg-light">
-        <span class="navbar-brand mb-0 h1">내가 좋아요 누른 글</span>
-    </nav>
-</div>
-<div class="card-columns">
-    <div class="card">
-        <img class="card-img-top" src="..." alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">Card title that wraps to a new line</h5>
-            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
-                content.
-                This content is a little bit longer.</p>
-        </div>
-    </div>
-</div>
+
 </body>
 
 </html>
