@@ -68,6 +68,7 @@ def auth(msg):
         print(user)
         if user == {}:
             return render_template("login.html")
+        
         else:
             return render_template('main.html',  data=json.dumps(user), msg=msg, user=user)
     except Exception as e:

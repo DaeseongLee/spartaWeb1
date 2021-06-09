@@ -45,6 +45,12 @@
             padding-left: 15px;
             margin-right: auto;
             margin-left: auto;
+            cursor: pointer;
+            box-shadow: 5px 5px 28px 4px rgba(120,120,120,0.68), 5px 5px 28px 4px rgba(120,120,120,0.68);
+            transition: all 200ms ease-in-out;
+        }
+        .card:hover {
+             background-color: #dfdee5;
         }
 
         .card-columns {
@@ -79,10 +85,6 @@
             padding-left: 70px;
         }
 
-        .card {
-            cursor: pointer;
-
-        }
     </style>
 
     <script>
@@ -96,8 +98,7 @@
         }
 
         (async function () {
-            const name = document.querySelector("#dropDown")
-            console.log(name);
+
             try {
                 const list = await (await fetch('/main/list',
                     {
@@ -106,16 +107,27 @@
                 )).json();
 
                 const {result} = list
+                console.log(result);
                 let cards = document.querySelector('.row');
                 for (let value of result) {
                     let temp_html = `<div class="col-sm-6" onclick="detail('${value.createdAt}')">
                                         <div class="card border-secondary mb-3">
-                                            <div class="card-header bg-transparent border-secondary">${value.title}</div>
-                                                  <div class="card-body text-secondary">
-                                                     <p class="card-text">${value.content}</p>
-                                                  </div>
-                                            <div class="card-footer bg-transparent border-secondary "><a href=${value.reference}></a></div>
-                                            <p class="card-text">${value.createdAt}</p>
+                                            <div class="card-header bg-transparent border-secondary" style="display: flex; justify-content: space-around">
+                                                  <div style="text-align: center; padding:0 5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                                                    <span style="font-weight: bold">제목:</span>  ${value.title}
+                                                 </div>
+                                                  <div><span style="font-weight: bold">좋아요 :</span> ${value.like}</div>
+                                            </div>
+                                             <div class="card-body text-secondary" style="text-align: center; padding:0 5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                                                     <span style="font-weight: bold"></span>  ${value.content}
+                                            </div>
+                                            <div class="card-footer bg-transparent border-secondary; no"><a href=${value.reference}></a></div>
+                                            <div style="display: flex; justify-content: space-around; margin-bottom: 5px;">
+                                                <div><span style="font-weight: bold">일시 :</span>
+                                                     <span class="card-text" style="font-size: 8px; text-align: center;">${value.createdAt}</span>
+                                                </div>
+                                                <div><span style="font-weight: bold">작성자 :</span> ${value.writer}</div>
+                                             </div>
                                         </div>
                                       </div>`
                     cards.innerHTML += temp_html
