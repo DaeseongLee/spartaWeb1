@@ -73,10 +73,21 @@
             line-height: 500px;
         }
 
+        .row {
+            margin-top: 30px;
+            padding-right: 70px;
+            padding-left: 70px;
+        }
 
+        .card {
+            cursor: pointer;
+
+        }
     </style>
 
     <script>
+        let user = {{ data|safe }};
+        console.log('user', user);
         function logout() {
             document.cookie = 'token' + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
             alert('로그아웃!')
@@ -84,6 +95,7 @@
         }
 
         (async function () {
+
             try {
                 const list = await (await fetch('/main/list',
                     {
@@ -92,23 +104,29 @@
                 )).json();
 
                 const {result} = list
-                let cards = document.querySelector('.card-columns');
-
+                let cards = document.querySelector('.row');
                 for (let value of result) {
-                    let temp_html = `<div class="card" style="width: 18rem;">
-                                        <img class="card-img-top" src="..." alt="Card image cap">
-                                        <div class="card-body">
-                                            <h5 class="card-title">${value.title}</h5>
-                                            <p class="card-text">${value.content}</p>
-                                            <a href=${value.reference}>참조자료</a>
+                    let temp_html = `<div class="col-sm-6" onclick="detail('${value.createdAt}')">
+                                        <div class="card border-secondary mb-3">
+                                            <div class="card-header bg-transparent border-secondary">${value.title}</div>
+                                                  <div class="card-body text-secondary">
+                                                     <p class="card-text">${value.content}</p>
+                                                  </div>
+                                            <div class="card-footer bg-transparent border-secondary "><a href=${value.reference}></a></div>
+                                            <p class="card-text">${value.createdAt}</p>
                                         </div>
-                                    </div>`
+                                      </div>`
                     cards.innerHTML += temp_html
                 }
             } catch (error) {
                 console.error(error);
             }
         })();
+
+        async function detail(id) {
+            window.location.href = `/detail/${id}`;
+        }
+
 
         async function setContent() {
             const formdData = new FormData();
@@ -121,6 +139,7 @@
             formdData.append('title', title);
             formdData.append('content', content);
             formdData.append('reference', reference);
+            formdData.append('writer', user.nickName);
             try {
                 const result = await (
                     await fetch('/main', {
@@ -177,7 +196,7 @@
 
 </div>
 
-<div class="card-columns"></div>
+<div class="row"></div>
 
 <!-- 모달 -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
