@@ -68,7 +68,6 @@ def auth(msg):
         print(user)
         if user == {}:
             return render_template("login.html")
-        
         else:
             return render_template('main.html',  data=json.dumps(user), msg=msg, user=user)
     except Exception as e:
@@ -239,16 +238,51 @@ def content():
 ########디페일 페이지 디페일 페이지 마지막###########
 @app.route('/detail/<keyword>', methods=['GET'])
 def detail(keyword):
-    board = db.board.find_one({"createdAt": keyword})
-    return render_template("detail.html", board=board)
+    token = request.cookies.get('token')
+    payload = jwt.decode(token, secret_key, algorithms=['HS256'])
+    user = db.user.find_one({"nickName": payload['nickName']}, {'_id': False, 'password': False})
 
+    board = db.board.find_one({"createdAt": keyword})
+    comments = db.comment.find({"boardId": keyword}).sort('createdAt', -1)
+    return render_template("detail.html", data=json.dumps(user), board=board, comments=comments )
+
+
+
+@app.route('/detail/comment', methods=['POST'])
+def setComment():
+    data = request.form;
+    now = date.now()
+    date_time = now.strftime("%Y년%m월%d일%H시%M분%S초")
+
+    doc = {'comment': data['comment'],
+           'boardId': data['boardId'],
+           'commenter': data['commenter'],
+           'createdAt': date_time
+           }
+    db.comment.insert_one(doc)
+    result = {data['comment'], data['boardId'], data['commenter'], date_time}
+    print(list(result))
+
+    return jsonify({"ok":"ok", "comment":data['comment'], "commenter":data['commenter'], "createdAt":date_time})
 
 # @app.route('/detail/like', methods=['POST'])
 # def like():
 #     board = db.board.find_one({"createdAt": keyword})
 #     return render_template("detail.html", board=board)
 
+# 좋아요
+@app.route('/detail/like/<nickName>', methods=['GET'])
+def like(nickName):
+    board = db.board.find_one({"writer":nickName},{'_id':False})
+    now = date.now()
 
+    date_time = now.strftime("%Y년%m월%d일%H시%M분%S초")
+    doc = {'boardID':board['createdAt'],'likeID':date_time}
+    db.like.insert_one(doc)
+
+    oldLike = board['like']
+    db.board.update_one({'writer': nickName}, {'$set': {'like': oldLike+1}})
+    return jsonify({ })
 
 
 if __name__ == '__main__':
