@@ -32,16 +32,26 @@
         let user = {{ data|safe }};
         console.log('user', user);
 
-        function like() {
-            $.ajax({
-                type: "GET",
-                url: "",
-                data: {title_give: title, author_give: author, review_give: review},
-                success: function (response) {
-                    alert(response);
-                    window.location.reload();
+        async function like(boardId) {
+           const formData = new FormData();
+
+            formData.append("user", user.nickName);
+            formData.append("boardId", boardId);
+            try {
+                const response = await (await fetch('/detail/like', {
+                    method: 'POST',
+                    body: formData,
+                })).json();
+                console.log(response.ok)
+                if(response.ok) {
+                    alert("좋아요를 했습니다");
+                }else {
+                    alert("이미 좋아요를 누르셨습니다.")
                 }
-            })
+
+            } catch (error) {
+                console.error(error);
+            }
         }
 
         async function posting(board) {
@@ -189,9 +199,8 @@
                 {{ board.title }}
             </div>
             <div class="like">
-                <button type="button" class="btn btn-outline-secondary">좋아요</button>
+                <button type="button" class="btn btn-outline-secondary" id="likeColor" style="color: red;" onclick="like('{{ board.createdAt }}')">좋아요</button>
             </div>
-
 
             <div class="input-group mb-3">
                 <div class="input-group-prepend">

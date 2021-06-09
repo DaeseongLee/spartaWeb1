@@ -271,18 +271,25 @@ def setComment():
 #     return render_template("detail.html", board=board)
 
 # 좋아요
-@app.route('/detail/like/<nickName>', methods=['GET'])
-def like(nickName):
-    board = db.board.find_one({"writer":nickName},{'_id':False})
-    now = date.now()
+@app.route('/detail/like', methods=['POST'])
+def like():
+    data = request.form;
+    print(data);
+    board = db.board.find_one({"createdAt":data['boardId']},{'_id':False})
+    like = board['like']+1
 
-    date_time = now.strftime("%Y년%m월%d일%H시%M분%S초")
-    doc = {'boardID':board['createdAt'],'likeID':date_time}
-    db.like.insert_one(doc)
+    alreadyLiker = db.user_like.find_one({"boardId":data['boardId'], "nickName": data['user']},{'_id':False})
 
-    oldLike = board['like']
-    db.board.update_one({'writer': nickName}, {'$set': {'like': oldLike+1}})
-    return jsonify({ })
+    if alreadyLiker is not None :
+        return jsonify({"ok": False})
+
+    doc = {'nickName': data['user'],
+           'boardId': data['boardId'],
+           }
+    db.user_like.insert_one(doc)
+
+    db.board.update_one({'createdAt': data['boardId']}, {'$set': {'like': like}})
+    return jsonify({"ok": True})
 
 
 if __name__ == '__main__':
