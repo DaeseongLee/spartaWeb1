@@ -88,6 +88,7 @@
     <script>
         let user = {{ data|safe }};
         console.log('user', user);
+
         function logout() {
             document.cookie = 'token' + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
             alert('로그아웃!')
@@ -95,7 +96,8 @@
         }
 
         (async function () {
-
+            const name = document.querySelector("#dropDown")
+            console.log(name);
             try {
                 const list = await (await fetch('/main/list',
                     {
@@ -161,30 +163,29 @@
 <body>
 
 <nav class="navbar is-fixed-top is-white" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-        <a class="navbar-item" href="/" style="margin-right: 15px;">
+    <div class="navbar-brand" style="display:flex; justify-content: space-between ">
+        <a class="navbar-item" href="/">
             <img style="width: 50px; height: 40px;" src="{{ url_for('static', filename='logo_book.png') }}">
             <strong class="is-sparta"
-                    style="font-family: 'Do Hyeon', sans-serif; font-size: larger;">기억보단 기록을</strong>
-
+                    style="font-family: 'Do Hyeon', sans-serif; font-size: larger; margin: 0;">기억보단 기록을</strong>
         </a>
-    </div>
-    <div class="navbar-brand">
-            <span>
-                    <button class="navbar navbar-light bg-light"
-                            style="font-family: 'Do Hyeon', sans-serif; margin-top: 6px; margin-left: 12px;"
-                            onclick="logout()" id="logout">logout
-                    </button>
-            </span>
-    </div>
-    <div class="navbar-brand">
-        <nav class="navbar navbar-light bg-light">
-            <button type="button" class="navbar navbar-light bg-light" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"
-                    data-bs-whatever="@mdo"
-                    style="font-family: 'Do Hyeon', sans-serif; margin-top: 0px; ">글쓰기
-            </button>
-        </nav>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropDown" role="button" data-bs-toggle="dropdown"
+               aria-expanded="false" style="font-family: 'Do Hyeon', sans-serif; color: black; ">{{ user.nickName }}</a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                    <a class="dropdown-item"
+                       style="font-family: 'Do Hyeon', sans-serif; margin-left: 2px;"
+                       onclick="logout()" id="logout">logout
+                    </a>
+                </li>
+                <li><a class="dropdown-item" data-bs-toggle="modal"
+                       data-bs-target="#exampleModal"
+                       data-bs-whatever="@mdo"
+                       style="font-family: 'Do Hyeon', sans-serif; margin-left: 2px">글쓰기</a>
+                </li>
+            </ul>
+        </li>
     </div>
 </nav>
 <div class="wrap">
