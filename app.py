@@ -66,7 +66,6 @@ def auth(msg):
         token = request.cookies.get('token')
         payload = jwt.decode(token, secret_key, algorithms=['HS256'])
         user = db.user.find_one({"nickName": payload['nickName']}, {'_id': False, 'password': False})
-        print(user)
         if user == {}:
             return render_template("login.html")
         else:
@@ -89,6 +88,10 @@ def login():
     # 로그인 페이지로 들어올때 로그인이 되어 있으면 이미 로그인이 되어있다는 메세지와 함께 메인화면으로 보내집니다.
     return auth("이미 로그인 되어 있습니다.")
 
+
+@app.route('/user/logout')
+def logout():
+    return render_template('login.html')
 
 # / 로그인 post 페이지 입니다. 닉네임과 비밀번호를 처리합니다.
 @app.route('/user/login', methods=['POST'])
@@ -246,7 +249,6 @@ def detail(keyword):
     user = db.user.find_one({"nickName": payload['nickName']}, {'_id': False, 'password': False})
 
     board = db.board.find_one({"key": keyword})
-    print(board)
     comments = db.comment.find({"boardId": keyword}).sort('createdAt', -1)
     return render_template("detail.html", data=json.dumps(user), board=board, comments=comments )
 
@@ -265,7 +267,6 @@ def setComment():
            }
     db.comment.insert_one(doc)
     result = {data['comment'], data['boardId'], data['commenter'], date_time}
-    print(list(result))
 
     return jsonify({"ok":"ok", "comment":data['comment'], "commenter":data['commenter'], "createdAt":date_time})
 
@@ -316,7 +317,6 @@ def mypage(myid):
     for board in mylikes:
         boardId = board['boardId']
         item = db.board.find_one({'createdAt':boardId})
-        print(item)
         boards.append(item)
 
     return render_template("mypage.html",data=user ,boards=boards)

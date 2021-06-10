@@ -59,15 +59,6 @@
     </style>
 </head>
 <body>
-<nav class="navbar is-fixed-top is-white" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-        <a class="navbar-item" href="/" style="margin-right: 15px;">
-            <img style="width: 50px; height: 40px;" src="{{ url_for('static', filename='logo_book.png') }}">
-            <strong class="is-sparta"
-                    style="font-family: 'Do Hyeon', sans-serif; font-size: larger;">기억보단 기록을</strong>
-        </a>
-    </div>
-</nav>
 <section class="hero">
     <div class="hero-body">
         <p class="title">
@@ -83,7 +74,7 @@
         <button onclick="login()" class="login_btn">로그인</button>
     </div>
     <div class="bottom_box">
-        <span>계정이 없으신가요?</span>
+        <span style="font-size: 0.9em;">계정이 없으신가요?</span>
         <button onclick="window.location.href='/user/join'">회원가입</button>
     </div>
 </main>
