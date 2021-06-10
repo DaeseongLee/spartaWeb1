@@ -7,7 +7,8 @@ import jwt
 from datetime import datetime as date
 import json
 
-client = MongoClient('localhost', 27017)
+client = MongoClient('mongodb://spartaWeb1:spartaWeb1@localhost', 27017)
+# client = MongoClient('localhost', 27017)
 app = Flask(__name__)
 db = client.sparataWeb1
 secret_key = 'secret_key'
@@ -228,7 +229,7 @@ def content():
     doc = {'key': key,
            'title': data['title'],
            'content': data['content'],
-           'reference': data['content'],
+           'reference': data['reference'],
            'createdAt': date_time,
            'like': 0,
            'writer': data['writer'],

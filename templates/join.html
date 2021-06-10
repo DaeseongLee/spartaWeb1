@@ -6,7 +6,7 @@
     <meta property="og:image" content="{{ url_for('static', filename='ogimage.png') }}" />
 
     <meta charset="UTF-8">
-    <title>오늘 무엇을 읽을까? | 회원가입</title>
+    <title>기억보단 기록을 | 회원가입</title>
     <link href="{{ url_for('static', filename='./css/login.css') }}" rel="stylesheet">
     <link rel="shortcut icon" href="/static/img/favicon.ico" type="image/x-icon">
     <script>
@@ -167,9 +167,7 @@
 <h1 class="title">  📖 기억보단 기록을</h1>
 <h1 class="warning"> 화면이 좁습니다. 넓혀주세요.</h1>
 <main class="login">
-    <h3>회원가입</h3>
-
-    <div class="form join">
+    <div class="form">
         <input type="text" placeholder="NickName" name="nickName" id="nickName" onkeyup="isValidNickName()" required>
         <span id="help-nickName" class="help"></span>
         <input type="password" placeholder="Password" name="password" id="password" onkeyup="isValidPassword(value)"
@@ -180,8 +178,11 @@
         <span id="help-passwordConfirm" class="help">영문과 숫자 조합의 8-20자의 비밀번호를 설정해주세요. 특수문자(!@#$%^&*)도 사용 가능합니다.</span>
         <button onclick="createAccount()" class="login_btn" disabled>회원가입</button>
     </div>
-    <span>계정이 있으신가요?</span>
-    <button onclick="window.location.href='/user/login'">로그인</button>
+
+    <div class="bottom_box">
+        <span>계정이 있으신가요?</span>
+        <button onclick="window.location.href='/user/login'">로그인</button>
+    </div>
 </main>
 
 </body>

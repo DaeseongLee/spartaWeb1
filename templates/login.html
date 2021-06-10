@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta property="og:title" content="기억보다는 기록을" />
-    <meta property="og:description" content="어제 보다 나은 개발자가 되기 위해 오늘 공부한 것을 기록하고,  함께 공유하며, 기록한 내용을 리뷰할 수 있는 사이트." />
-    <meta property="og:image" content="{{ url_for('static', filename='ogimage.png') }}" />
+    <meta property="og:title" content="기억보다는 기록을"/>
+    <meta property="og:description" content="어제 보다 나은 개발자가 되기 위해 오늘 공부한 것을 기록하고,  함께 공유하며, 기록한 내용을 리뷰할 수 있는 사이트."/>
+    <meta property="og:image" content="{{ url_for('static', filename='ogimage.png') }}"/>
 
     <meta charset="UTF-8">
     <title>기억보다는 기록을 | 로그인</title>
@@ -39,11 +39,11 @@
                             alert(`비밀번호가 ${num}번 틀렸습니다.`);
                             $('#password').css("border", "1px solid red");
 
-                        }else if( err==="3"){
+                        } else if (err === "3") {
                             $.cookie('pwToken', token, {path: '/'});
                             alert("비밀번호 3회 오류 입니다. 10초 후에 다시 시도하세요")
 
-                        }else if(err==="4"){
+                        } else if (err === "4") {
                             alert("비밀번호 3회 틀리셨지만 다시 기회를 드릴게요. 로그인 하세요.")
                         }
                     }
@@ -82,8 +82,10 @@
         <input type="password" placeholder="Password" required id="password">
         <button onclick="login()" class="login_btn">로그인</button>
     </div>
-    <span>계정이 없으신가요?</span>
-    <button onclick="window.location.href='/user/join'">회원가입</button>
+    <div class="bottom_box">
+        <span>계정이 없으신가요?</span>
+        <button onclick="window.location.href='/user/join'">회원가입</button>
+    </div>
 </main>
 
 <script>
