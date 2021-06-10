@@ -6,6 +6,7 @@
     <meta property="og:image" content="{{ url_for('static', filename='/img/1.jpg') }}"/>
     <meta charset="UTF-8">
     <title>기억보다는 기록을 | 로그인</title>
+    <link rel="shortcut icon" href="/static/img/favicon.ico" type="image/x-icon">
     <link href="{{ url_for('static', filename='./css/login.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
 
@@ -25,15 +26,24 @@
                     const {ok = null, err = null, user = null, token = null} = response;
                     if (ok) {
                         $.cookie('token', token, {path: '/'});
-                        alert(`${user.nickName}님 방문을 환영합니다.`);
+                        alert(`${user.nickName}님 방문을 환영합니다. 로그인은 하루 동안만 유지됩니다.`);
                         window.location.href = "/main";
                     } else {
                         if (err === "1") {
                             alert("없는 닉네임 입니다.");
                             $('#nickName').css("border", "1px solid red");
+
                         } else if (err === "2") {
-                            alert("비밀번호가 틀렸습니다.");
+                            const num = Number($.cookie('wrongPwNum'));
+                            alert(`비밀번호가 ${num}번 틀렸습니다.`);
                             $('#password').css("border", "1px solid red");
+
+                        }else if( err==="3"){
+                            $.cookie('pwToken', token, {path: '/'});
+                            alert("비밀번호 3회 오류 입니다. 10초 후에 다시 시도하세요")
+
+                        }else if(err==="4"){
+                            alert("비밀번호 3회 틀리셨지만 다시 기회를 드릴게요. 로그인 하세요.")
                         }
                     }
                 }

@@ -222,9 +222,11 @@ def content_list():
 def content():
     now = date.now()
     date_time = now.strftime("%Y년%m월%d일%H시%M분%S초")
+    key = now.strftime("%Y%m%d%H%M%S")
     data = request.form
 
-    doc = {'title': data['title'],
+    doc = {'key': key,
+           'title': data['title'],
            'content': data['content'],
            'reference': data['content'],
            'createdAt': date_time,
@@ -242,7 +244,8 @@ def detail(keyword):
     payload = jwt.decode(token, secret_key, algorithms=['HS256'])
     user = db.user.find_one({"nickName": payload['nickName']}, {'_id': False, 'password': False})
 
-    board = db.board.find_one({"createdAt": keyword})
+    board = db.board.find_one({"key": keyword})
+    print(board)
     comments = db.comment.find({"boardId": keyword}).sort('createdAt', -1)
     return render_template("detail.html", data=json.dumps(user), board=board, comments=comments )
 
@@ -274,23 +277,48 @@ def setComment():
 @app.route('/detail/like', methods=['POST'])
 def like():
     data = request.form;
-    print(data);
+
     board = db.board.find_one({"createdAt":data['boardId']},{'_id':False})
-    like = board['like']+1
+    like = board['like']
 
     alreadyLiker = db.user_like.find_one({"boardId":data['boardId'], "nickName": data['user']},{'_id':False})
-
-    if alreadyLiker is not None :
-        return jsonify({"ok": False})
 
     doc = {'nickName': data['user'],
            'boardId': data['boardId'],
            }
-    db.user_like.insert_one(doc)
+    is_like = False
+    if alreadyLiker is not None :
+        db.user_like.delete_one(doc)
+        like -= 1
+    else :
+        db.user_like.insert_one(doc)
+        like += 1
+        is_like = True
 
     db.board.update_one({'createdAt': data['boardId']}, {'$set': {'like': like}})
-    return jsonify({"ok": True})
+    return jsonify({"ok": is_like})
 
+
+
+
+
+##내가 좋아요 한 페이지
+########디페일 페이지 디페일 페이지 마지막###########
+@app.route('/like/<myid>', methods=['GET'])
+def mypage(myid):
+    token = request.cookies.get('token')
+    payload = jwt.decode(token, secret_key, algorithms=['HS256'])
+    user = db.user.find_one({"nickName": payload['nickName']}, {'_id': False, 'password': False})
+
+    mylikes = list(db.user_like.find({'nickName':user['nickName']}))
+    boards = []
+    for board in mylikes:
+        boardId = board['boardId']
+        item = db.board.find_one({'createdAt':boardId})
+        print(item)
+        boards.append(item)
+
+    return render_template("mypage.html",data=user ,boards=boards)
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

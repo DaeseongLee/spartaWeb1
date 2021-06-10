@@ -4,6 +4,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>오늘 읽을 만한 글 | MyPage</title>
+    <link rel="shortcut icon" href="/static/img/favicon.ico" type="image/x-icon">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
@@ -89,7 +90,15 @@
 
     <script>
         let user = {{ data|safe }};
-        console.log('user', user);
+        console.log(user['nickName']);
+
+
+
+        function mypage(){
+            alert(`${user['nickName']}님이 '좋아요'한 페이지로 이동합니다.`)
+            window.location.href = `/like/${user['nickName']}`;
+        }
+
 
         function logout() {
             document.cookie = 'token' + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
@@ -110,7 +119,7 @@
                 console.log(result);
                 let cards = document.querySelector('.row');
                 for (let value of result) {
-                    let temp_html = `<div class="col-sm-6" onclick="detail('${value.createdAt}')">
+                    let temp_html = `<div class="col-sm-6" onclick="detail('${value.key}')">
                                         <div class="card border-secondary mb-3">
                                             <div class="card-header bg-transparent border-secondary" style="display: flex; justify-content: space-around">
                                                   <div style="text-align: center; padding:0 5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
@@ -195,6 +204,11 @@
                        data-bs-target="#exampleModal"
                        data-bs-whatever="@mdo"
                        style="font-family: 'Do Hyeon', sans-serif; margin-left: 2px">글쓰기</a>
+                <li>
+                    <a class="dropdown-item"
+                       style="font-family: 'Do Hyeon', sans-serif; margin-left: 2px;"
+                       onclick="mypage()" >마이페이지
+                    </a>
                 </li>
             </ul>
         </li>
